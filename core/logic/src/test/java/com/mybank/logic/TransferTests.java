@@ -20,11 +20,13 @@ public class TransferTests {
         assertEquals(accountId,accountManager.getAccount(accountId).get().getAccountID());
         accountManager.getAccount(accountId2).get().setSaldo(200000);
 
+        TransferPool transferPool1 = new TransferPool();
+
         try {
-            TransactionExecutor.performTransfer(new Transfer(accountId,accountId2,50000),accountManager);
-            TransactionExecutor.performTransfer(new Transfer(accountId,accountId2,50000),accountManager);
-            TransactionExecutor.performTransfer(new Transfer(accountId,accountId2,50000),accountManager);
-            TransactionExecutor.performTransfer(new Transfer(accountId,accountId2,40000),accountManager);
+            transferPool1.performTransfer(new Transfer(accountId,accountId2,50000),accountManager);
+            transferPool1.performTransfer(new Transfer(accountId,accountId2,50000),accountManager);
+            transferPool1.performTransfer(new Transfer(accountId,accountId2,50000),accountManager);
+            transferPool1.performTransfer(new Transfer(accountId,accountId2,40000),accountManager);
         } catch (TransferException e) {
             e.printStackTrace();
         }
@@ -32,11 +34,10 @@ public class TransferTests {
         assertEquals(1190000,accountManager.getAccount(accountId).get().getSaldo());
         assertEquals(10000,accountManager.getAccount(accountId2).get().getSaldo());
 
-        /*for(String item: accountManager.getAccount(accountId).get().getStatementHistory().printAll().split(";"))
+        for(String item: accountManager.getAccount(accountId).get().getStatementHistory().printAll().split(";"))
             System.out.println(item);
 
         for(String item: accountManager.getAccount(accountId2).get().getStatementHistory().printAll().split(";"))
             System.out.println(item);
-*/
     }
 }

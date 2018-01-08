@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * Created by Stanisław Leja on 07.01.18.
  */
-public class AccountManager {
+public class AccountManager{
 
     private Map<Long,Account> accounts;
 

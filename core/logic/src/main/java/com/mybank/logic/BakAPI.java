@@ -1,32 +1,32 @@
 package com.mybank.logic;
 
+import java.util.Optional;
+
 /**
  * Created by Stanisław Leja on 08.01.18.
  */
-public class BakAPI {
-    AccountManager accountManager;
-    TransferPool transferPool;
-    TransferPool transferPool1;
+public class BakAPI implements BankAPIInterface{
+    private AccountManager accountManager;
+    private TransferPool transferPool;
 
     public BakAPI() {
-        AccountManager accountManager = new AccountManager();
-        TransferPool transferPool = new TransferPool();
-        TransferPool transferPool1 = new TransferPool();
+        this.accountManager = new AccountManager();
+        this.transferPool = new TransferPool();
     }
 
-    public void transferMoney(long accountIdDst, long accountIdSrc, long transferAmount){
-
+    public void transferMoney(long accountIdDst, long accountIdSrc, long transferAmount) throws TransferException {
         Transfer transfer = new Transfer(accountIdDst,accountIdSrc,transferAmount);
-        try {
-            transferPool.performTransfer(transfer,accountManager);
-        } catch (TransferException e) {
-            e.printStackTrace();
-        }
+        transferPool.performTransfer(transfer,accountManager);
     }
 
-    public void createBankAccount(String name, String surname, long amount){
-        long accountId = accountManager.createAccount(name,surname);
-        accountManager.getAccount(accountId).get().setSaldo(amount);
+    public long createBankAccount(String name, String surname, long amount){
+        long accountId = this.accountManager.createAccount(name,surname);
+        this.accountManager.getAccount(accountId).get().setSaldo(amount);
+        return accountId;
+    }
+
+    public Optional<Account> getAccount(long accountId){
+        return accountManager.getAccount(accountId);
     }
 
 }
